@@ -1,0 +1,34 @@
+[
+  {
+    "id": "jee-2025-phy-kin-01",
+    "exam": "jee-main",
+    "subject": "physics",
+    "chapter": "kinematics",
+    "year": 2025,
+    "question": "A particle moves along a straight line such that its displacement $x$ at time $t$ is given by $x = 2t^3 - 6t^2 + 4t$. What is the acceleration of the particle when its velocity becomes zero?",
+    "options": {
+      "A": "$0\\text{ m/s}^2$",
+      "B": "$12\\text{ m/s}^2$",
+      "C": "$\\pm 4\\sqrt{3}\\text{ m/s}^2$",
+      "D": "$4\\sqrt{3}\\text{ m/s}^2$"
+    },
+    "correct_option": "C",
+    "explanation": "Velocity is the first derivative of displacement with respect to time:\n$$v = \\frac{dx}{dt} = 6t^2 - 12t + 4$$\n\nSetting $v = 0$:\n$$6t^2 - 12t + 4 = 0 \\implies 3t^2 - 6t + 2 = 0$$\n\nUsing the quadratic formula:\n$$t = \\frac{6 \\pm \\sqrt{36 - 24}}{6} = 1 \\pm \\frac{1}{\\sqrt{3}}$$\n\nAcceleration is the derivative of velocity:\n$$a = \\frac{dv}{dt} = 12t - 12$$\n\nSubstituting $t = 1 \\pm \\frac{1}{\\sqrt{3}}$:\n$$a = \\pm 4\\sqrt{3}\\text{ m/s}^2$$"
+  },
+  {
+    "id": "jee-2025-phy-kin-02",
+    "exam": "jee-main",
+    "subject": "physics",
+    "chapter": "kinematics",
+    "year": 2025,
+    "question": "A body is projected vertically upwards with a speed $u = 40\\text{ m/s}$. Find the time taken by the body to reach half of its maximum height. (Take $g = 10\\text{ m/s}^2$)",
+    "options": {
+      "A": "$4(1 - \\frac{1}{\\sqrt{2}})\\text{ s}$",
+      "B": "$2\\sqrt{2}\\text{ s}$",
+      "C": "$4(\\sqrt{2} - 1)\\text{ s}$",
+      "D": "$2\\text{ s}$"
+    },
+    "correct_option": "A",
+    "explanation": "Maximum height reached by a projectile launched vertically upwards:\n$$H_{\\text{max}} = \\frac{u^2}{2g} = \\frac{40^2}{2(10)} = 80\\text{ m}$$\n\nHalf of maximum height is $40\\text{ m}$.\n\nUsing $h = ut - \\frac{1}{2}gt^2$:\n$$40 = 40t - 5t^2 \\implies t^2 - 8t + 8 = 0$$\n\nSolving for $t$:\n$$t = 4\\left(1 - \\frac{1}{\\sqrt{2}}\\right)\\text{ s}$$"
+  }
+]
