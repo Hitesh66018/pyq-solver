@@ -59,6 +59,7 @@ export default function Home() {
           {exams.map((exam) => (
             <div
               key={exam.id}
+              id={exam.id}
               className="bg-slate-900 border border-slate-800 rounded-2xl p-6 shadow-sm"
             >
               <div className="flex items-center justify-between mb-2">

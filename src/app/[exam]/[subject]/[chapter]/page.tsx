@@ -1,118 +1,68 @@
-import Link from 'next/link';
-import { BookOpen, Atom, Compass, ArrowRight } from 'lucide-react';
+import Link from "next/link";
+import { notFound } from "next/navigation";
+import { ArrowLeft, ListChecks } from "lucide-react";
+import QuestionCard from "@/components/QuestionCard";
+import { getChapterQuestionSet } from "@/lib/questions";
 
-const exams = [
-  {
-    id: 'jee-main',
-    name: 'JEE Main',
-    badge: 'Engineering',
-    description: 'Chapter-wise previous year questions with step-by-step mathematical derivations.',
-    subjects: [
-      {
-        name: 'Physics',
-        slug: 'physics',
-        icon: Atom,
-        chapters: [
-          { name: 'Kinematics', slug: 'kinematics', count: 2 },
-          { name: 'Laws of Motion', slug: 'laws-of-motion', count: 'Coming soon' },
-        ],
-      },
-    ],
-  },
-  {
-    id: 'neet',
-    name: 'NEET UG',
-    badge: 'Medical',
-    description: 'High-yield NCERT-focused previous year questions and detailed solutions.',
-    subjects: [
-      {
-        name: 'Physics',
-        slug: 'physics',
-        icon: Compass,
-        chapters: [
-          { name: 'Units and Measurements', slug: 'units-and-measurements', count: 'Coming soon' },
-        ],
-      },
-    ],
-  },
-];
+interface ChapterPageProps {
+  params: Promise<{ exam: string; subject: string; chapter: string }>;
+}
 
-export default function Home() {
+export default async function ChapterPage({ params }: ChapterPageProps) {
+  const { exam, subject, chapter } = await params;
+  const questionSet = getChapterQuestionSet(exam, subject, chapter);
+
+  if (!questionSet) notFound();
+
   return (
-    <main className="min-h-screen bg-slate-950 text-slate-100 py-12 px-4 sm:px-6">
-      <div className="max-w-4xl mx-auto">
-        {/* Hero Section */}
-        <header className="text-center mb-12">
-          <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-semibold bg-emerald-950/60 text-emerald-400 border border-emerald-800/50 mb-4">
-            100% Free & Open PYQ Bank
-          </span>
-          <h1 className="text-4xl sm:text-5xl font-black tracking-tight text-white mb-3">
-            Master Competitive Exams
-          </h1>
-          <p className="text-slate-400 text-base sm:text-lg max-w-xl mx-auto">
-            Solve chapter-wise Previous Year Questions with instant verification and formatted step-by-step solutions.
-          </p>
+    <main className="min-h-[calc(100vh-72px)] flex-1 bg-slate-950 px-4 py-8 text-slate-100 sm:px-6 sm:py-12">
+      <div className="mx-auto max-w-6xl">
+        <Link
+          href={`/#${exam}`}
+          className="mb-7 inline-flex items-center gap-2 text-sm font-medium text-slate-400 transition hover:text-emerald-300"
+        >
+          <ArrowLeft aria-hidden="true" className="h-4 w-4" />
+          Back to exam library
+        </Link>
+
+        <header className="mb-8 flex flex-col justify-between gap-5 border-b border-slate-800 pb-7 sm:flex-row sm:items-end">
+          <div>
+            <p className="mb-2 text-xs font-semibold uppercase text-emerald-400">
+              {exam.replaceAll("-", " ")} / {subject}
+            </p>
+            <h1 className="text-3xl font-bold text-white">{questionSet.title}</h1>
+            <p className="mt-2 text-sm text-slate-400">
+              Previous-year questions with instant feedback and worked solutions.
+            </p>
+          </div>
+          <div className="inline-flex w-fit items-center gap-2 rounded-md border border-slate-800 bg-slate-900 px-3 py-2 text-sm text-slate-300">
+            <ListChecks aria-hidden="true" className="h-4 w-4 text-emerald-400" />
+            {questionSet.questions.length} questions
+          </div>
         </header>
 
-        {/* Exam Cards */}
-        <div className="space-y-6">
-          {exams.map((exam) => (
-            <div
-              key={exam.id}
-              className="bg-slate-900 border border-slate-800 rounded-2xl p-6 shadow-sm"
-            >
-              <div className="flex items-center justify-between mb-2">
-                <h2 className="text-2xl font-bold text-white">{exam.name}</h2>
-                <span className="text-xs font-semibold px-2.5 py-0.5 rounded bg-slate-800 text-slate-300">
-                  {exam.badge}
-                </span>
-              </div>
-              <p className="text-sm text-slate-400 mb-6">{exam.description}</p>
+        <div className="grid gap-8 lg:grid-cols-[minmax(0,1fr)_220px]">
+          <section aria-label="Chapter questions" className="order-2 space-y-4 lg:order-1">
+            {questionSet.questions.map((question) => (
+              <QuestionCard key={question.id} data={question} />
+            ))}
+          </section>
 
-              <div className="space-y-4">
-                {exam.subjects.map((sub) => {
-                  const Icon = sub.icon;
-                  return (
-                    <div key={sub.slug} className="bg-slate-950/50 border border-slate-800/80 rounded-xl p-4">
-                      <div className="flex items-center gap-2 mb-3 text-emerald-400 font-semibold text-sm">
-                        <Icon className="w-4 h-4" />
-                        <span>{sub.name}</span>
-                      </div>
-
-                      <div className="grid grid-cols-1 sm:grid-cols-2 gap-2.5">
-                        {sub.chapters.map((chap) => {
-                          const isClickable = typeof chap.count === 'number';
-                          return isClickable ? (
-                            <Link
-                              key={chap.slug}
-                              href={`/${exam.id}/${sub.slug}/${chap.slug}`}
-                              className="flex items-center justify-between p-3 rounded-lg bg-slate-900 border border-slate-800 hover:border-emerald-500/50 hover:bg-slate-850 transition group"
-                            >
-                              <span className="text-sm font-medium text-slate-200 group-hover:text-emerald-300">
-                                {chap.name}
-                              </span>
-                              <div className="flex items-center gap-1.5 text-xs text-slate-400 group-hover:text-emerald-400">
-                                <span>{chap.count} PYQs</span>
-                                <ArrowRight className="w-3.5 h-3.5" />
-                              </div>
-                            </Link>
-                          ) : (
-                            <div
-                              key={chap.slug}
-                              className="flex items-center justify-between p-3 rounded-lg bg-slate-900/40 border border-slate-800/40 text-slate-500 text-sm"
-                            >
-                              <span>{chap.name}</span>
-                              <span className="text-xs">{chap.count}</span>
-                            </div>
-                          );
-                        })}
-                      </div>
-                    </div>
-                  );
-                })}
-              </div>
-            </div>
-          ))}
+          <aside className="order-1 h-fit rounded-lg border border-slate-800 bg-slate-900 p-4 lg:sticky lg:top-28 lg:order-2">
+            <h2 className="mb-3 text-sm font-semibold text-slate-200">Question palette</h2>
+            <nav aria-label="Question palette" className="flex flex-wrap gap-2 lg:grid lg:grid-cols-4">
+              {questionSet.questions.map((question, index) => (
+                <Link
+                  key={question.id}
+                  href={`#question-${question.id}`}
+                  className="flex h-9 w-9 items-center justify-center rounded-md border border-slate-700 bg-slate-950 text-xs font-semibold text-slate-300 transition hover:border-emerald-400 hover:text-emerald-300"
+                  aria-label={`Go to question ${index + 1}`}
+                >
+                  {index + 1}
+                </Link>
+              ))}
+            </nav>
+          </aside>
         </div>
       </div>
     </main>
